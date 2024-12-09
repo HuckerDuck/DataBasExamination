@@ -42,6 +42,7 @@ public class DAO {
         //! Skapa en lista som kommer spara allt
         List<WorkRole> workRoles = new ArrayList<>();
 
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)); {
 
         }
