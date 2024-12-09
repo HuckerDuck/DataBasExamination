@@ -12,7 +12,7 @@ public class InputHandler {
     }
 
     //! Metod för att läsa Strängar
-    //! Gör det mer modulärt och under promt kan du skriva texten som kommer upp för användaren
+    //! Gör det mer modulärt och under prompt kan du skriva texten som kommer upp för användaren
     public String stringReader(String prompt) {
         System.out.println(prompt);
         return scanner.nextLine();

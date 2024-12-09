@@ -104,9 +104,9 @@ public class JDBCUtility {
             properties.load(input);
 
             //? Ladda informationen från properties till Attributen i början
-            DATABAS_URL = properties.getProperty("DATABASE_URL");
-            DATABASE_USER = properties.getProperty("DATABASE_USER");
-            DATABASE_PASSWORD = properties.getProperty("DATABASE_PASSWORD");
+            DATABAS_URL = properties.getProperty("db.url");
+            DATABASE_USER = properties.getProperty("db.user");
+            DATABASE_PASSWORD = properties.getProperty("db.password");
 
         } catch (IOException e) {
             throw new ExceptionInInitializerError("Unable to read the properties file");
