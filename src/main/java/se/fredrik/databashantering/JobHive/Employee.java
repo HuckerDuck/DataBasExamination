@@ -20,6 +20,17 @@ public class Employee {
         this.roleId = roleId;
     }
 
+    //! ToString metod
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "\n + employeeId=" + employeeId +
+                "\n name='" + name + '\'' +
+                "\n email='" + email + '\'' +
+                "\n roleId=" + roleId +
+                "\n }";
+    }
+
     //! Getter
 
     public int getEmployeeId() {return employeeId;}

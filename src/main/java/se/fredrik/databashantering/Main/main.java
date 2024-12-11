@@ -1,26 +1,32 @@
 package se.fredrik.databashantering.Main;
 
 import se.fredrik.databashantering.DAO.DAOImplicator;
+import se.fredrik.databashantering.Tools.InputHandler;
 import se.fredrik.databashantering.Tools.JDBCUtility;
+
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 
 public class main {
     public static void main(String[] args) throws SQLException {
+        Scanner scanner = new Scanner (System.in);
+        InputHandler inputhandler = new InputHandler(scanner);
 
 
-        //! Try med resources
-        //! Använder sig av AutoCloseable
-        //! När try blocket avslutas så kommer den automatiskt att kalla på metoden close()
-        try{
-            DAOImplicator dao = new DAOImplicator(JDBCUtility.getConnection());
+        try (Connection connection = JDBCUtility.getConnection()) {
+            DAOImplicator dao = new DAOImplicator(connection);
+            boolean loggedIn = false;
+
+            while
+
 
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+
+        //! Skriver ut om du ej kan koppla dig mot servern
+        catch (SQLException e){
+            System.out.println("Could not connect to the server" + e.getMessage());
         }
     }
 }

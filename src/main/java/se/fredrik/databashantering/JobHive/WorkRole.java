@@ -1,6 +1,6 @@
 package se.fredrik.databashantering.JobHive;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class WorkRole {
 
@@ -10,16 +10,28 @@ public class WorkRole {
     private String title;
     private String description;
     private double salary;
-    private Date creationDate;
+    private java.sql.Date creationDate;
 
     //! Konstruktor
 
-    public WorkRole(int roleId, String title, String description, double salary, Date creationDate) {
+    public WorkRole(int roleId, String title, String description, double salary, java.sql.Date creationDate) {
         this.roleId = roleId;
         this.title = title;
         this.description = description;
         this.salary = salary;
         this.creationDate = creationDate;
+    }
+
+    //! ToString Metod
+    @Override
+    public String toString() {
+        return "WorkRole{" +
+                "\n roleId=" + roleId +
+                "\n title='" + title + '\'' +
+                "\n description='" + description + '\'' +
+                "\n salary=" + salary +
+                "\n creationDate=" + creationDate +
+                '}';
     }
 
     //! Getter
@@ -36,5 +48,5 @@ public class WorkRole {
     public void setTitle(String title) {this.title = title;}
     public void setDescription(String description) {this.description = description;}
     public void setSalary(double salary) {this.salary = salary;}
-    public void setCreationDate(Date creationDate) {this.creationDate = creationDate;}
+    public void setCreationDate(java.sql.Date creationDate) {this.creationDate = creationDate;}
 }

@@ -22,4 +22,7 @@ public interface DAO {
     void insertWorkRole(WorkRole workRole)throws SQLException;
     void updateWorkRole(WorkRole workRole)throws SQLException;
     void deleteWorkRole(int workroleId)throws SQLException;
+
+    //! Metod för Login
+    Employee Login(String Email, String Password) throws SQLException;
 }

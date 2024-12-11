@@ -2,7 +2,6 @@ package se.fredrik.databashantering.DAO;
 
 import se.fredrik.databashantering.JobHive.Employee;
 import se.fredrik.databashantering.JobHive.WorkRole;
-import se.fredrik.databashantering.JobHive.Employee;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +24,7 @@ public class DAOImplicator implements DAO{
     public Connection getConnection() {return connection;}
 
 
+    //! Hämta alla anställda och lägg de i en lista
     @Override
     public List<Employee> getAllEmployees() throws SQLException {
         List<Employee> employees = new ArrayList<>();
@@ -47,56 +47,213 @@ public class DAOImplicator implements DAO{
 
         }
         catch (SQLException e){
-            throw new SQLException("Error when getting all employees");
+            throw new SQLException("Error when getting all employees", e);
         }
 
         return employees;
     }
 
+    //! ___________________________________________________________________________________________________________________________________________
+    //! ___________________________________________________________________________________________________________________________________________
+    //!                                                     EMPLOYEE
 
-
+    //! Hämta specifik anställd via ID
     @Override
     public Employee getEmployeeByID(int employeeId) throws SQLException {
-        return null;
+        String sql = "SELECT * FROM employee WHERE employee_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, employeeId);
+            try (ResultSet rs = pstmt.executeQuery()){
+                if (rs.next()){
+                    return new Employee(
+                            rs.getInt("employee_id"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getInt("role_id")
+                    );
+                }
+                else {
+                    throw new SQLException("Employee was not found" + employeeId);
+                }
+
+            }
+
+        }
+        catch (SQLException e){
+            throw new SQLException("Error when getting employee by ID");
+        }
     }
 
+    //! Lägg till en anställd
     @Override
     public void insertEmployee(Employee employee) throws SQLException {
-
+        String sql = "Insert into employee(name, email, password, role_id) values(?,?,?,?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, employee.getName());
+            pstmt.setString(2, employee.getEmail());
+            pstmt.setString(3, employee.getPassword());
+            pstmt.setInt(4, employee.getRoleId());
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException("Error when inserting employee", e);
+        }
     }
 
+    //! Uppdatera en anställd
     @Override
     public void updateEmployee(Employee employee) throws SQLException {
+        String sql = "UPDATE employee SET name = ?, email = ?, password = ? WHERE employee_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, employee.getName());
+            pstmt.setString(2, employee.getEmail());
+            pstmt.setString(3, employee.getPassword());
+            pstmt.setInt(4, employee.getEmployeeId());
+            pstmt.executeUpdate();
+        }
 
+        catch (SQLException e){
+            throw new SQLException("Error when updating employee", e);
+        }
     }
 
+    //! Ta bort en anställd
     @Override
     public void deleteEmployee(int employeeId) throws SQLException {
-
+        String sql = "DELETE FROM employee WHERE employee_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, employeeId);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException("Error when deleting employee");
+        }
     }
 
+    //! ___________________________________________________________________________________________________________________________________________
+    //! ___________________________________________________________________________________________________________________________________________
+    //!                                                     WORKROLE
+
+    //! Hämta alla workroles
     @Override
     public List<WorkRole> getAllWorkRoles() throws SQLException {
-        return List.of();
+        List<WorkRole> workRoles = new ArrayList<>();
+        String sql = "SELECT * FROM work_role";
+
+        //! Try-with-resources
+        //! Stänger automatiskt när det är klart
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                WorkRole workRole = new WorkRole(
+                        rs.getInt("role_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getDouble("salary"),
+                        rs.getDate("creation_date")
+                );
+                workRoles.add(workRole);
+            }
+
+
+
+        }
+        catch (SQLException e){
+            throw new SQLException("Error when getting all work roles");
+        }
+
+        return workRoles;
     }
 
     @Override
     public WorkRole getWorkRoleByID(int workRoleId) throws SQLException {
-        return null;
+        String sql = "SELECT * FROM work_role WHERE role_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, workRoleId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()){
+                    return new WorkRole(
+                            rs.getInt("role_id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getDouble("salary"),
+                            rs.getDate("creation_date")
+                    );
+
+                }
+
+                else {
+                    throw new SQLException("Work role was not found" + workRoleId);
+                }
+            }
+            catch (SQLException e){
+                throw new SQLException("Error when getting work role by ID", e);
+            }
+        }
     }
 
     @Override
     public void insertWorkRole(WorkRole workRole) throws SQLException {
+        String sql = "Insert into work_role(role_id, title, description, salary, creation_date) values(?,?,?,?,?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, workRole.getRoleId());
+            pstmt.setString(2, workRole.getTitle());
+            pstmt.setString(3, workRole.getDescription());
+            pstmt.setDouble(4, workRole.getSalary());
+            pstmt.setDate(5, workRole.getCreationDate());
+            pstmt.executeUpdate();
+
+        }
+        catch (SQLException e){
+            throw new SQLException("Error when inserting work role", e);
+        }
 
     }
 
     @Override
     public void updateWorkRole(WorkRole workRole) throws SQLException {
+        String sql = "Update work_role SET title = ?, description = ?, salary = ?, creation_date = ? WHERE role_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, workRole.getTitle());
+            pstmt.setString(2, workRole.getDescription());
+            pstmt.setDouble(3, workRole.getSalary());
+            pstmt.setDate(4, workRole.getCreationDate());
+            pstmt.setInt(5, workRole.getRoleId());
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException("Error when updating work role", e);
+        }
 
     }
 
     @Override
     public void deleteWorkRole(int workroleId) throws SQLException {
+        String sql = "DELETE FROM work_role WHERE role_id = ?";
 
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, workroleId);
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("No work role found with ID: " + workroleId);
+            }
+        }
+        catch (SQLException e) {
+            throw new SQLException("Error when deleting work role with ID: " + workroleId, e);
+        }
+    }
+
+    //! ___________________________________________________________________________________________________________________________________________
+    //! ___________________________________________________________________________________________________________________________________________
+    //!                                                     Inloggning
+
+
+    @Override
+    public Employee Login(String Email, String Password) throws SQLException {
+        return null;
     }
 }
