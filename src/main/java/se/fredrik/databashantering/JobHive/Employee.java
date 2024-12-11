@@ -10,7 +10,10 @@ public class Employee {
     private String password;
     private int roleId;
 
-    //! Konstruktor
+    private WorkRole workRole;
+
+    //! Konstruktor utan workrole
+
 
     public Employee(int employeeId, String name, String email, String password, int roleId) {
         this.employeeId = employeeId;
@@ -18,6 +21,16 @@ public class Employee {
         this.email = email;
         this.password = password;
         this.roleId = roleId;
+    }
+
+    //! Konstruktor med allt
+    public Employee(int employeeId, String name, String email, String password, int roleId, WorkRole workRole) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roleId = roleId;
+        this.workRole = workRole;
     }
 
     //! ToString metod
@@ -38,6 +51,7 @@ public class Employee {
     public String getEmail() {return email;}
     public String getPassword() {return password;}
     public int getRoleId() {return roleId;}
+    public WorkRole getWorkRole() {return workRole;}
 
     //! Setter
 
@@ -46,4 +60,5 @@ public class Employee {
     public void setEmail(String email) {this.email = email;}
     public void setPassword(String password) {this.password = password;}
     public void setRoleId(int roleId) {this.roleId = roleId;}
+    public void setWorkRole(WorkRole workRole) {this.workRole = workRole;}
 }

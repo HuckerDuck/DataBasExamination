@@ -33,6 +33,7 @@ public class DAOImplicator implements DAO{
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee");
             ResultSet rs= statement.executeQuery();
             while(rs.next()){
+
                 Employee employee = new Employee(
                         rs.getInt("employee_id"),
                         rs.getString("name"),
@@ -104,7 +105,14 @@ public class DAOImplicator implements DAO{
     //! Uppdatera en anställd
     @Override
     public void updateEmployee(Employee employee) throws SQLException {
-        String sql = "UPDATE employee SET name = ?, email = ?, password = ? WHERE employee_id = ?";
+        //! Textblock, introducerad i JAVA 15
+        String sql = """
+          UPDATE employee
+          SET NAME = ?,
+              email = ?,
+              password = ?
+          WHERE employee_id = ?
+        """;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setString(1, employee.getName());
             pstmt.setString(2, employee.getEmail());
@@ -121,7 +129,12 @@ public class DAOImplicator implements DAO{
     //! Ta bort en anställd
     @Override
     public void deleteEmployee(int employeeId) throws SQLException {
-        String sql = "DELETE FROM employee WHERE employee_id = ?";
+        String sql =
+        """
+        DELETE FROM employee 
+        WHERE employee_id = ?
+        """;
+
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, employeeId);
             pstmt.executeUpdate();
@@ -254,6 +267,56 @@ public class DAOImplicator implements DAO{
 
     @Override
     public Employee Login(String Email, String Password) throws SQLException {
-        return null;
+        String sql =
+        //! TextBlock för SQL
+                //! Gör att du slipper skriva en massa + överallt
+        """
+        SELECT e.*, w.Title, w.Description, w.Salary, w.Creation_date
+        FROM employee e
+        INNER JOIN work_role w ON e.role_id = w.role_id
+        WHERE e.email = ? AND e.password = ?;
+    """;
+
+        //! Kolla dig mot servern och kolla om det fungerar
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, Email);
+            pstmt.setString(2, Password);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    //! Skapa en ny workRole och Sen Employee
+                    //! Kolla om det sedan finns i MySQL-Databasen
+
+                    WorkRole workRole = new WorkRole(
+                            rs.getInt("role_id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getDouble("salary"),
+                            rs.getDate("creation_date")
+                    );
+
+                    Employee employee = new Employee(
+                            rs.getInt("employee_id"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getInt("role_id"),
+                            workRole
+                    );
+
+                    return employee;
+
+                } else {
+                    throw new SQLException("The Login failed" + "\n " + "Wrong Username or Password");
+
+                }
+            }
+        }
+
+
+        //! Kastar SQLException om du ej kommer in på servern
+        catch (SQLException e){
+            throw new SQLException("Error when trying to login", e);
+        }
+
     }
 }
