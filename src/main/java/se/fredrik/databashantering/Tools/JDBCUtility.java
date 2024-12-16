@@ -12,14 +12,14 @@ import java.util.Properties;
 public class JDBCUtility {
 
     //! Attribut
-    //! Information från properties filen
+    //! Information från application.properties filen
 
     private static Properties properties = new Properties();
 
     //! Attribut för att koppla mig mot servern
-    private static final String DATABAS_URL;
-    private static final String DATABASE_USER;
-    private static final String DATABASE_PASSWORD;
+    private static String DATABAS_URL;
+    private static String DATABASE_USER;
+    private static String DATABASE_PASSWORD;
     private static Connection connection;
 
     //! Metod för att skapa en koppling mot servern
@@ -39,6 +39,7 @@ public class JDBCUtility {
 
             if (connection != null) {
                 connection.close();
+                connection = null;
             }
         }
         catch (Exception e) {
@@ -92,26 +93,42 @@ public class JDBCUtility {
 
     }
 
-    //! Static metod för att hämta information från properties filen till servern
+    //! Stäng kopplingen mot servern
+    public static void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                connection = null;
+                System.out.println("Databasen stänges framgångsrikt. Woop Woop!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Misslyckades med att stänga databasen " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
-    static {
-        //! Laddar properties filen
-        try (InputStream input = JDBCUtility.class.getClassLoader().getResourceAsStream("properties")) {
+
+    //! Static metod för att hämta information från application.properties filen till servern
+    //! Generisk för att användas både i produktion och i test
+
+    public static void loadProperties (String fileName) {
+        try (InputStream input = JDBCUtility.class.getClassLoader().getResourceAsStream(fileName)) {
             if (input == null) {
-                //? Skriver ut felet om den inte hittar properties filen
-                throw new IOException("Unable to find the properties file");
+                throw new IOException("Kunde ej hitta properties filen" + fileName);
             }
             properties.load(input);
 
-            //? Ladda informationen från properties till Attributen i början
             DATABAS_URL = properties.getProperty("db.url");
             DATABASE_USER = properties.getProperty("db.user");
             DATABASE_PASSWORD = properties.getProperty("db.password");
 
-        } catch (IOException e) {
-            throw new ExceptionInInitializerError("Unable to read the properties file");
+        }
+        catch (IOException e){
+            throw new ExceptionInInitializerError("Could not find the application.properties file" + e);
         }
     }
+
+
 
     //! Getter
 
@@ -121,6 +138,7 @@ public class JDBCUtility {
 
     public static void setProperties(Properties properties) {JDBCUtility.properties = properties;}
     public static void setConnection(Connection connection) {JDBCUtility.connection = connection;}
+
 
 
 }

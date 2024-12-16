@@ -19,6 +19,15 @@ public class Start {
         InputHandler inputhandler = new InputHandler(scanner);
         SimpleText simpleText = new SimpleText();
 
+        //! Ladda propertiesfilen
+        try {
+            JDBCUtility.loadProperties("application.properties");
+        }
+        catch (Exception e) {
+            System.out.println("Kunde ej ladda properties filen" + e.getMessage());
+            return;
+        }
+
 
         //! Try-catch
         //! Med resources för att stänga ner automatiskt
