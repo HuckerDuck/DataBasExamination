@@ -2,6 +2,8 @@ package se.fredrik.databashantering.DAO;
 
 import se.fredrik.databashantering.JobHive.Employee;
 import se.fredrik.databashantering.JobHive.WorkRole;
+import se.fredrik.databashantering.Tools.InputHandler;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -137,8 +139,14 @@ public class DAOImplicator implements DAO{
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, employeeId);
-            pstmt.executeUpdate();
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected == 0){
+                throw new SQLException("Ingen anställd med de Id:t" + employeeId + " hittades");
+            }
         }
+
         catch (SQLException e){
             throw new SQLException("Error when deleting employee");
         }
@@ -211,7 +219,6 @@ public class DAOImplicator implements DAO{
     public void insertWorkRole(WorkRole workRole) throws SQLException {
         String sql = "Insert into work_role(role_id, title, description, salary, creation_date) values(?,?,?,?,?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
-            pstmt.setInt(1, workRole.getRoleId());
             pstmt.setString(2, workRole.getTitle());
             pstmt.setString(3, workRole.getDescription());
             pstmt.setDouble(4, workRole.getSalary());
@@ -306,7 +313,7 @@ public class DAOImplicator implements DAO{
                     return employee;
 
                 } else {
-                    throw new SQLException("The Login failed" + "\n " + "Wrong Username or Password");
+                    throw new SQLException("Inloggningen misslyckades" + "\n " + "Felaktigt email eller lösenord");
 
                 }
             }

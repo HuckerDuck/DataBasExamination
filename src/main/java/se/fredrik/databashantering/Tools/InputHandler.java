@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class InputHandler {
     //! Attribut för scanner
-    private Scanner scanner;
+    private final Scanner scanner;
 
     //! Konstruktor för scanner
     public InputHandler(Scanner scanner) {
@@ -13,15 +13,20 @@ public class InputHandler {
 
     //! Metod för att läsa Strängar
     //! Gör det mer modulärt och under prompt kan du skriva texten som kommer upp för användaren
+    public String stringReader() {
+        System.out.print("Ditt val: ");
+        return scanner.nextLine();
+    }
+
     public String stringReader(String prompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         return scanner.nextLine();
     }
 
     public int intReader(String prompt) {
         System.out.println(prompt);
         while (!scanner.hasNextInt()) {
-            System.out.println("Felaktig inmatning, vänligen skriv in en siffra (int)");
+            System.out.print("Felaktig inmatning, vänligen skriv in en siffra (int)");
             //! Scanner.next används för att rensa det som användaren skrev in
             scanner.next();
         }
@@ -30,7 +35,7 @@ public class InputHandler {
     }
 
     public double doubleReader(String prompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         while (!scanner.hasNextDouble()) {
             System.out.println("Felaktig inmatning, vänligen skriv in en siffra (double)");
         }

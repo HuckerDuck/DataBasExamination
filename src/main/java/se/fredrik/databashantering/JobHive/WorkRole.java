@@ -25,13 +25,15 @@ public class WorkRole {
     //! ToString Metod
     @Override
     public String toString() {
-        return "WorkRole{" +
-                "\n roleId=" + roleId +
-                "\n title='" + title + '\'' +
-                "\n description='" + description + '\'' +
-                "\n salary=" + salary +
-                "\n creationDate=" + creationDate +
-                '}';
+        return """
+                
+                roleId = %s
+                title = %s
+                description = %s
+                salary = %.2f
+                creationDate = %s
+                
+                """.formatted(roleId, title, description, salary, creationDate);
     }
 
     //! Getter

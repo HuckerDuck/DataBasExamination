@@ -15,6 +15,7 @@ public class Employee {
     //! Konstruktor utan workrole
 
 
+
     public Employee(int employeeId, String name, String email, String password, int roleId) {
         this.employeeId = employeeId;
         this.name = name;
@@ -36,12 +37,16 @@ public class Employee {
     //! ToString metod
     @Override
     public String toString() {
-        return "Employee{" +
-                "\n + employeeId=" + employeeId +
-                "\n name='" + name + '\'' +
-                "\n email='" + email + '\'' +
-                "\n roleId=" + roleId +
-                "\n }";
+        return """
+                Employee {
+                employeeId = %d
+                name = %s
+                email = %s
+                password = %s
+                roleId = %d
+                """
+                .formatted
+                        (employeeId, name, email, password, roleId);
     }
 
     //! Getter
