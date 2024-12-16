@@ -1,12 +1,13 @@
 package se.fredrik.databashantering.Tools;
 
 public class Utils {
-    public static void waitTimer(int seconds) {
-        try{
-            Thread.sleep(seconds * 1000);
-        }
-        catch(InterruptedException e){
-            System.out.println("Pausen avbröts av ett fel" + e.getMessage());
+    public static void waitTimer(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds); // Pausar i angivet antal millisekunder
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Pausen avbröts.");
         }
     }
+
 }

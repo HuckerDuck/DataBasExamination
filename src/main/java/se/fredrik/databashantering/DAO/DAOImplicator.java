@@ -217,19 +217,18 @@ public class DAOImplicator implements DAO{
 
     @Override
     public void insertWorkRole(WorkRole workRole) throws SQLException {
-        String sql = "Insert into work_role(role_id, title, description, salary, creation_date) values(?,?,?,?,?)";
+        String sql = "Insert into work_role(title, description, salary, creation_date) values(?,?,?,?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
-            pstmt.setString(2, workRole.getTitle());
-            pstmt.setString(3, workRole.getDescription());
-            pstmt.setDouble(4, workRole.getSalary());
-            pstmt.setDate(5, workRole.getCreationDate());
+            pstmt.setString(1, workRole.getTitle());
+            pstmt.setString(2, workRole.getDescription());
+            pstmt.setDouble(3, workRole.getSalary());
+            pstmt.setDate(4, workRole.getCreationDate());
             pstmt.executeUpdate();
 
         }
         catch (SQLException e){
             throw new SQLException("Error when inserting work role", e);
         }
-
     }
 
     @Override
@@ -302,7 +301,6 @@ public class DAOImplicator implements DAO{
                     );
 
                     Employee employee = new Employee(
-                            rs.getInt("employee_id"),
                             rs.getString("name"),
                             rs.getString("email"),
                             rs.getString("password"),

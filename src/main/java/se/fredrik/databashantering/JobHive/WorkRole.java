@@ -22,6 +22,13 @@ public class WorkRole {
         this.creationDate = creationDate;
     }
 
+    public WorkRole(String title, String description, double salary, java.sql.Date creationDate) {
+        this.title = title;
+        this.description = description;
+        this.salary = salary;
+        this.creationDate = creationDate;
+    }
+
     //! ToString Metod
     @Override
     public String toString() {
@@ -32,7 +39,6 @@ public class WorkRole {
                 description = %s
                 salary = %.2f
                 creationDate = %s
-                
                 """.formatted(roleId, title, description, salary, creationDate);
     }
 

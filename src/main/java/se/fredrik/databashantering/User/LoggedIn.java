@@ -26,6 +26,7 @@ public class LoggedIn {
         boolean running = true;
 
         while (running) {
+            String wait = inputHandler.stringReader("Tryck för att fortsätta");
             simpleText.loggedInText();
             String input = inputHandler.stringReader();
 
@@ -76,7 +77,7 @@ public class LoggedIn {
                     case "3" -> getAllWorkRoles();
                     case "4" -> getworkRolebyID();
                     case "5" -> deleteworkRole();
-                    case "6" -> running = false;
+                    case "6" -> { return; }
                     default -> simpleText.wrongChoiceSix();
                 }
             }
@@ -92,24 +93,32 @@ public class LoggedIn {
         String name = inputHandler.stringReader("Ange namn: ");
         String email = inputHandler.stringReader("Ange Email: ");
         String password = inputHandler.stringReader("Ange Lösenord ");
-
+        int workRoleID = inputHandler.intReader("Ange WorkRole ID: ");
 
         try {
-            Employee newEmployee = new Employee(0, name, email, password, roleID);
+            // Hämta WorkRole från databasen
+            WorkRole workRole = dao.getWorkRoleByID(workRoleID);
+            if (workRole == null) {
+                System.out.println("Ingen WorkRole hittades med ID: " + workRoleID);
+                return;
+            }
+
+            // Skapa ny Employee
+            Employee newEmployee = new Employee(name, email, password, roleID, workRole);
             dao.insertEmployee(newEmployee);
+
             String message = """
-                    name = %s
-                    email = %s
-                    password = %s
-                    roleID = %d
-                    
-                    Skapad
-                    """;
+                 name = %s
+                 email = %s
+                 password = %s
+                 roleID = %d
+                 workRole = %s
+        Skapad
+        """.formatted(name, email, password, roleID, workRole.getTitle());
             System.out.println(message);
-        }
-        catch (Exception e) {
-            System.out.println("Kunde ej skapa anställd" + e.getMessage());
-            inputHandler.stringReader("Tryck valfri knapp för att fortsätta: ");
+            String wait = inputHandler.stringReader("Tryck för att fortsätta");
+        } catch (Exception e) {
+            System.out.println("Kunde ej skapa anställd: " + e.getMessage());
         }
     }
 
@@ -225,20 +234,20 @@ public class LoggedIn {
 
 
         try {
-            WorkRole workrole = new WorkRole(0, titel, desription, salary, creationDate);
+            WorkRole workrole = new WorkRole(titel, desription, salary, creationDate);
 
             //! Lägg till den i databasen
 
             dao.insertWorkRole(workrole);
 
             String message = """
-                     Titel = %s 
+                     Titel = %s\s
                      Description = %s
                      Salary = %s
                      creationDate = %s
-                     
+                    \s
                      Skapad
-                     """;
+                    \s""";
             System.out.println(message);
             System.out.println();
             inputHandler.stringReader("Tryck valfri knapp för att fortsätta: ");
@@ -283,6 +292,7 @@ public class LoggedIn {
             System.out.println();
             System.out.println(workrole.toString());
             System.out.println();
+            String wait = inputHandler.stringReader("Tryck för att fortsätta");
         }
         catch (SQLException e){
             System.out.println("Kunde ej hitta specifik Arbetsroll");
@@ -305,7 +315,9 @@ public class LoggedIn {
 
             if(workroles.isEmpty()){
                 System.out.println("Det finns inga arbetsroller i databasen");
+                String wait = inputHandler.stringReader("Tryck för att fortsätta");
                 return;
+
             }
             inputHandler.stringReader("Tryck valfri knapp för att fortsätta: ");
             System.out.println();
@@ -324,7 +336,7 @@ public class LoggedIn {
             //! Kolla om ArbetsRollen verkligen ska tas bort
             String confirmDelete = inputHandler.stringReader("Är du säker att du vill ta bort den? ");
             if (confirmDelete.equalsIgnoreCase("JA")) {
-                dao.deleteEmployee(workRoleID);
+                dao.deleteWorkRole(workRoleID);
                 System.out.println("Användare" + workRoleID + "  är nu borttagen");
                 System.out.println();
 

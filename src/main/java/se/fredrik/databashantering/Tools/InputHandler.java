@@ -24,15 +24,15 @@ public class InputHandler {
     }
 
     public int intReader(String prompt) {
-        System.out.println(prompt);
-        while (!scanner.hasNextInt()) {
-            System.out.print("Felaktig inmatning, vänligen skriv in en siffra (int)");
-            //! Scanner.next används för att rensa det som användaren skrev in
-            scanner.next();
-        }
-        //! Returnerar en scanner med en int tillbaka
-        return scanner.nextInt();
+        System.out.print(prompt);
+        int value = scanner.nextInt();
+
+        //! Scanner nextLine för att undvika problem
+
+        scanner.nextLine();
+        return value;
     }
+
 
     public double doubleReader(String prompt) {
         System.out.print(prompt);

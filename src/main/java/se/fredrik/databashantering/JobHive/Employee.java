@@ -1,5 +1,4 @@
 package se.fredrik.databashantering.JobHive;
-
 public class Employee {
 
     //! Private Attribut
@@ -14,8 +13,6 @@ public class Employee {
 
     //! Konstruktor utan workrole
 
-
-
     public Employee(int employeeId, String name, String email, String password, int roleId) {
         this.employeeId = employeeId;
         this.name = name;
@@ -25,8 +22,7 @@ public class Employee {
     }
 
     //! Konstruktor med allt
-    public Employee(int employeeId, String name, String email, String password, int roleId, WorkRole workRole) {
-        this.employeeId = employeeId;
+    public Employee(String name, String email, String password, int roleId, WorkRole workRole) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -34,19 +30,33 @@ public class Employee {
         this.workRole = workRole;
     }
 
+    public Employee(String name, String email, String password, int roleID) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roleId = roleID;
+    }
+
+
+
     //! ToString metod
     @Override
     public String toString() {
-        return """
-                Employee {
-                employeeId = %d
-                name = %s
-                email = %s
-                password = %s
-                roleId = %d
-                """
-                .formatted
-                        (employeeId, name, email, password, roleId);
+        return
+
+            """
+            ARBETSTAGARE
+            ____________________________
+            
+            employeeId = %d
+            name = %s
+            email = %s
+            password = %s
+            roleId = %d
+            
+            ARBETSROLL: = %s
+            """
+                .formatted(employeeId, name, email, password, roleId,workRole);
     }
 
     //! Getter
