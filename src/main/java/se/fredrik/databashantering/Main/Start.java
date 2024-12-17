@@ -63,6 +63,7 @@ public class Start {
 
                             //! Skriv ut information om användaren
 
+                            System.out.println();
                             System.out.println("Välkommen");
                             System.out.println();
                             System.out.println(employee);

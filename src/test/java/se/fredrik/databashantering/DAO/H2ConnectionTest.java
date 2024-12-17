@@ -7,16 +7,21 @@ import java.sql.SQLException;
 public class H2ConnectionTest {
 
     public static void main(String[] args) {
-        String url = "jdbc:h2:tcp://localhost:9191/~/testdb"; // URL för H2-servern
-        String user = "sa"; // Standardanvändare
-        String password = ""; // Standardlösenord (ofta tomt)
+        // H2 database URL (in-memory database for testing)
+        String url = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";  // in-memory database
+        String user = "sa";
+        String password = "";
 
+        // Test the connection
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             if (connection != null) {
-                System.out.println("Anslutning till H2-servern lyckades!");
+                System.out.println("Connection to H2 database successful!");
+            }
+            else {
+                System.out.println("Failed to connect to H2 database.");
             }
         } catch (SQLException e) {
-            System.err.println("Misslyckades med att ansluta till H2-servern: " + e.getMessage());
+            System.out.println("Connection failed: " + e.getMessage());
         }
     }
 }
