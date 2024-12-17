@@ -20,7 +20,8 @@ public class H2ConnectionTest {
             else {
                 System.out.println("Failed to connect to H2 database.");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Connection failed: " + e.getMessage());
         }
     }
