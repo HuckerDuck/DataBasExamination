@@ -34,12 +34,6 @@ public class SimpleText {
         System.out.println();
     }
 
-    public void introTextWrongChoice(){
-        System.out.println();
-        System.out.println("Vänligen välj en siffra mellan 1-2");
-        System.out.println();
-    }
-
     public void introTextChooseExit(){
         System.out.println("Programmet avslutas...");
         System.out.println("..........");

@@ -2,7 +2,6 @@ package se.fredrik.databashantering.DAO;
 
 import se.fredrik.databashantering.JobHive.Employee;
 import se.fredrik.databashantering.JobHive.WorkRole;
-import se.fredrik.databashantering.Tools.InputHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,11 +19,6 @@ public class DAOImplicator implements DAO{
     public DAOImplicator(Connection connection) {
         this.connection = connection;
     }
-
-
-    //! Getter
-    public Connection getConnection() {return connection;}
-
 
     //! Hämta alla anställda och lägg de i en lista
     @Override
