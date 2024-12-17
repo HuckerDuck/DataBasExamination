@@ -22,11 +22,11 @@ public class LoggedIn {
 
     //! While loop med två val
     //! Mot Anställda / eller mot Arbetsroller
-    public void run() {
+    public void run(){
         boolean running = true;
 
         while (running) {
-            String wait = inputHandler.stringReader("Tryck för att fortsätta");
+            System.out.println(inputHandler.stringReader("Tryck för att fortsätta"));
             simpleText.loggedInText();
             String input = inputHandler.stringReader();
 
@@ -116,7 +116,6 @@ public class LoggedIn {
         Skapad
         """.formatted(name, email, password, roleID, workRole.getTitle());
             System.out.println(message);
-            String wait = inputHandler.stringReader("Tryck för att fortsätta");
         } catch (Exception e) {
             System.out.println("Kunde ej skapa anställd: " + e.getMessage());
         }
@@ -190,8 +189,6 @@ public class LoggedIn {
             System.out.println("Kunde ej hitta specifik anställd " + e.getMessage());
             inputHandler.stringReader("Tryck valfri knapp för att fortsätta: ");
         }
-
-
     }
 
     //! Ta bort Anställd
@@ -222,7 +219,7 @@ public class LoggedIn {
 
 
     //! ____________________________________________________________________________________________________________________
-    //!                                 Metoder för arbetsroller med Scanner
+    //!  Metoder för arbetsroller med Scanner
 
 
     //! Skapa en ArbetsRoll

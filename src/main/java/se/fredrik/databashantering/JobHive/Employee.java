@@ -46,7 +46,6 @@ public class Employee {
 
             """
             ARBETSTAGARE
-            ____________________________
             
             employeeId = %d
             name = %s
