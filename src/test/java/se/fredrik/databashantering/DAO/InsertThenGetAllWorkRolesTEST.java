@@ -34,7 +34,6 @@ public class InsertThenGetAllWorkRolesTEST {
             return;
         }
 
-        //! Hämta anslutning via JDBCUtility
         connection = JDBCUtility.getConnection();
 
         //! Skapa en ny DAO och använd kopplingen
